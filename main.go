@@ -18,9 +18,9 @@ func main(){
     data := make(map[string]string)
     data["message"] = "Teste"
 
-    httpResp, err := c.Dispatch("channel-0346", "event-test", data);
+    httpResp, err := c.Dispatch("channel-0124", "event-test", data);
     if  err != nil {
         panic("Crashed Hard");
     }
-    fmt.Printf("%s", httpResp.GetBody())
+    fmt.Printf("\n%s\n", httpResp.GetBody())
 }

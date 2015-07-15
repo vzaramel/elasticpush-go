@@ -7,6 +7,7 @@ import (
     "encoding/json"
     // "fmt"
     "io/ioutil"
+    "bytes"
 )
 
 const API_VERSION = "v1";
@@ -47,15 +48,6 @@ func (c *Client) SetClientId( id string) {
     c.clientId = id
 }
 
-type Reader struct {
-    Data []byte
-}
-
-func (r *Reader) Read(p []byte) (n int, err error){
-    p = r.Data
-    return len(p), nil
-}
-
 func (c *Client) Dispatch( channel, event string, data interface{}) (*HttpResponse, error){
 
     requestBody := make(map[string]interface{})
@@ -70,12 +62,8 @@ func (c *Client) Dispatch( channel, event string, data interface{}) (*HttpRespon
     if err != nil{
         return nil, err
     }
-
-    // fmt.Printf("%s",c.url + "/events");
-    // fmt.Printf("%s",requestBodyJson);
-    reader := &Reader{requestBodyJson}
-
-    req, err := http.NewRequest("POST", c.url +"/events" , reader)
+    
+    req, err := http.NewRequest("POST", c.url +"/events" , bytes.NewBuffer(requestBodyJson))
     if err != nil {
         return nil, err
     }
